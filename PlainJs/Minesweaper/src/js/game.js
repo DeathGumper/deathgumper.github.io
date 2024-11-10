@@ -48,6 +48,7 @@ export default class Game {
     }
 
     newGame = () => {
+        $('#statusDisplay').text('');
         this.displayStats();
         this.setupBoard(20, 20, 50);
 
@@ -56,14 +57,14 @@ export default class Game {
 
     lost = () => {
         this.losses++;
-
-        this.newGame();
+        $('#statusDisplay').text('YOU LOST!');
+        setTimeout(this.newGame, 2000);
     }
 
     won = () => {
         this.wins++;
-        
-        this.newGame();
+        $('#statusDisplay').text('YOU WON!');
+        setTimeout(this.newGame, 2000);
     }
 
     getAdjTiles = (ri, ci) => {
@@ -105,7 +106,7 @@ export default class Game {
             loops++;
 
             tile.reveal();
-            let adjTiles = this.getAdjTiles(ri, ci);
+            let adjTiles = this.getAllAround(ri, ci);
 
             for (let i = 0; i < adjTiles.length; i++) {
                 let [r, c] = adjTiles[i];
@@ -145,9 +146,28 @@ export default class Game {
                 let cell = $(
                     `<div 
                         class="boardCell ${tile.revealed? "revealedCell": "hiddenCell"}"
-                    >${tile.revealed? tile.held: ""}</div>`);
-                cell.on('mousedown', () => {this.board[ri][ci].clicked((bomb) => {this.revealTiles(ri, ci, bomb)})});
-                
+                    >${tile.revealed? (tile.held == '0'? '': tile.held): (tile.flagged? 'O': '')}</div>`);
+                cell.mousedown((event) => {
+                    switch (event.which) {
+                        case 1:
+                            tile.clicked((bomb) => {this.revealTiles(ri, ci, bomb)});
+                            break;
+                        case 3:
+                            tile.flag();
+                            this.displayBoard(this.board);
+                            break;
+                    }
+                });
+
+                if (tile.held != 'bomb') {
+                    let n = Number(tile.held)
+                    cell.css('color', `rgb(${ (n == 3 || n == 5? 50 * n: 50) }, ${ (n == 2? 100: 50) }, ${ (n == 1 || n == 4? 200 / (n/2): 0) })`)
+                }
+
+                if (tile.flagged) {
+                    cell.css('color', `rgb(150, 20, 20)`)
+                }
+
                 rowElement.append(cell);
             }
 
@@ -163,7 +183,7 @@ export default class Game {
     setupBoard = (rowAmt, columnAmt, bombAmt) => {
         this.board = [];
         this.size = [rowAmt, columnAmt];
-        this.amtOfBombs = bombAmt;
+        this.bombAmt = bombAmt;
 
         let bombs = [];
 

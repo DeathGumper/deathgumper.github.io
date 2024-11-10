@@ -2,6 +2,10 @@ body {
     height: 100%;
     background-color: rgb(44, 44, 44);
     overflow: hidden;
+    font-family: "ＭＳ Ｐゴシック";
+    font-weight: bolder;
+    text-shadow: 1px 0 currentColor;
+    font-size: 15px;
 }
 
 #boardContainer {
@@ -20,24 +24,45 @@ body {
     text-align: center;
     justify-content: center;
     border: none;
+    line-height: 30px;
 }
 
 .boardCell:hover {
     filter: brightness(150%);
-
 }
 
 #dataContainer {
     display: flex;
+    align-items: center;
 }
 
-#dataContainer p {
-    color: white;
-    margin: 20px;
+#dataContainer #wins, #dataContainer #losses {
+    border: 5px inset rgb(239, 239, 239);
+    background-color: rgb(193, 193, 193);
+    padding: 3px;
+    color: rgb(0, 0, 0);
+    margin-left: 10px;
 }
 
 #dataContainer button {
-    margin: 20px;
+    border: 5px outset rgb(239, 239, 239);
+    background-color: rgb(193, 193, 193);
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+    font-family: "ＭＳ Ｐゴシック";
+    text-shadow: 1px 0 currentColor;
+    font-weight: bolder;
+    padding: 3px;
+    margin-left: 10px;
+}
+
+#dataContainer button:active {
+
+    border: 5px inset rgb(239, 239, 239);
+}
+
+#dataContainer button:active p {
+    transform: translate(2px, 2px);
 }
 
 #boardContainer:active {
@@ -46,12 +71,12 @@ body {
 
 .hiddenCell { 
     background-color: rgb(193, 193, 193);
-    box-sizing:border-box;
     border: 5px outset rgb(239, 239, 239);
 }
 
 .revealedCell {
     background-color: rgb(190, 190, 190);
+    border: 5px solid rgb(190, 190, 190);
 }
 
 /* Snatched from stackoverflow :) */

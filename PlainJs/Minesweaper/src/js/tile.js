@@ -2,6 +2,7 @@ export default class Tile {
     constructor(held) {
         this.held = held;
         this.revealed = false;
+        this.flagged = false;
     }
 
     clicked = (callback) => {
@@ -12,5 +13,9 @@ export default class Tile {
 
     reveal = () => {
         this.revealed = true;
+    }
+
+    flag = () => {
+        this.flagged = !this.flagged;
     }
 }

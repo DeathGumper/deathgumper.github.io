@@ -1,6 +1,6 @@
 import Game from './game.js';
 var game = null;
 
-$('#newGameBtn').on('click', function() {
+$('document').ready(function() {
     game = new Game();
 });
