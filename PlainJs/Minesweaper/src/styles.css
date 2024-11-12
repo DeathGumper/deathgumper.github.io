@@ -1,17 +1,28 @@
-body {
-    height: 100%;
-    background-color: rgb(44, 44, 44);
-    overflow: hidden;
+* {
     font-family: "ＭＳ Ｐゴシック";
     font-weight: bolder;
     text-shadow: 1px 0 currentColor;
     font-size: 15px;
 }
 
+body {
+    height: 100%;
+    background-color: rgb(38, 41, 48);
+    overflow: hidden;
+}
+
 #boardContainer {
     width: fit-content;
     outline: 10px solid rgb(89, 89, 89);
     margin: 20px;
+}
+
+#boardContainer.lostBorder {
+    outline: 10px solid rgb(134, 46, 46);
+}
+
+#boardContainer.wonBorder {
+    outline: 10px solid rgb(49, 134, 46);
 }
 
 .boardRow {
@@ -36,24 +47,31 @@ body {
     align-items: center;
 }
 
-#dataContainer #wins, #dataContainer #losses {
-    border: 5px inset rgb(239, 239, 239);
+#dataContainer select {
+    border: 3px inset rgb(239, 239, 239);
     background-color: rgb(193, 193, 193);
-    padding: 3px;
-    color: rgb(0, 0, 0);
+    padding: 9px;
+    margin-left: 10px;
+    font-weight: bolder;
+}
+
+#dataContainer #wins, #dataContainer #losses {
+    border: 3px inset rgb(239, 239, 239);
+    background-color: rgb(193, 193, 193);
+    padding: 10px;
     margin-left: 10px;
 }
 
 #dataContainer button {
     border: 5px outset rgb(239, 239, 239);
     background-color: rgb(193, 193, 193);
-    font-size: 15px;
-    color: rgb(0, 0, 0);
-    font-family: "ＭＳ Ｐゴシック";
-    text-shadow: 1px 0 currentColor;
-    font-weight: bolder;
-    padding: 3px;
+    padding: 8px;
     margin-left: 10px;
+}
+
+#dataContainer button div {
+    margin: none;
+    padding: none;
 }
 
 #dataContainer button:active {
@@ -61,13 +79,15 @@ body {
     border: 5px inset rgb(239, 239, 239);
 }
 
-#dataContainer button:active p {
-    transform: translate(2px, 2px);
+#dataContainer button:active div {
+    font-size: 13px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
-#boardContainer:active {
+/* #boardContainer:active {
     animation: shake 0.1s;
-}
+} */
 
 .hiddenCell { 
     background-color: rgb(193, 193, 193);
@@ -77,6 +97,10 @@ body {
 .revealedCell {
     background-color: rgb(190, 190, 190);
     border: 5px solid rgb(190, 190, 190);
+}
+
+.shake {
+    animation: shake 0.2s;
 }
 
 /* Snatched from stackoverflow :) */

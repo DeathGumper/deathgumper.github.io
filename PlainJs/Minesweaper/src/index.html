@@ -12,10 +12,13 @@
 </head>
 <body oncontextmenu="return false;">
     <div id="dataContainer">
-        <button id="newGameBtn"><p>New Game</p></button>
-        <p id="wins">Wins: 0</p>
-        <p id="losses">Losses: 0</p>
+        <button id="newGameBtn"><div>New Game</div></button>
         <div id="statusDisplay"></div>
+        <select id="difficulty">
+            <option value="24-20-100">Hard</option>
+            <option value="18-14-40">Medium</option>
+            <option value="12-8-10">Easy</option>
+        </select>
     </div>
     
     <div id="boardContainer">

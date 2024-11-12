@@ -1,175 +1,105 @@
 import Tile from './tile.js';
-
-// Some code I snatched for checking if an array exist in a 2d array
-function includesArray(matrix, subArray) {
-    for (let row of matrix) {
-      if (row.length !== subArray.length) continue;
-  
-      let match = true;
-      for (let i = 0; i < row.length; i++) {
-        if (row[i] !== subArray[i]) {
-          match = false;
-          break;
-        }
-      }
-  
-      if (match) return true;
-    }
-  
-    return false;
-  }
-
-// Some more code I snatched because I didnt want to write it out
-function removeDuplicates(arr) {
-    var uniques = [];
-    var itemsFound = {};
-    for(var i = 0, l = arr.length; i < l; i++) {
-        var stringified = JSON.stringify(arr[i]);
-        if(itemsFound[stringified]) { continue; }
-        uniques.push(arr[i]);
-        itemsFound[stringified] = true;
-    }
-    return uniques;
-}
+import View from './view.js';
+import { removeDuplicates, includesArray } from './utils.js';
 
 // Main game class
 export default class Game {
     constructor() {
-        // Losses and wins in this session
+        // Declares a new view
+        this.view = new View();
 
         // Could make this into a localstorage variable so you can always have access to it
-        this.losses = 0;
-        this.wins = 0;
+        this.score = 0;
+        this.highscore = 0;
 
         // Makes a new game.
         this.newGame();
+
+        // Bind new game
+        $('#newGameBtn').on('mousedown', this.newGame);
     }
 
-    updateBoard = () => {
-        // Calls display board with the current board
-        this.displayBoard(this.board);
-    }
+    done = (status) => {
+        // Basically same as lost just increments wons
+        console.log(Date.now() - this.startTime);
 
-    displayStats = () => {
-        // Display your wins and losses
-        $('#wins').text('Wins: ' + this.wins);
-        $('#losses').text('Losses: ' + this.losses);
+        $('#boardContainer').addClass(status + 'Border');
+        this.revealAll();
+        setTimeout(() => {this.newGame(); $('#boardContainer').removeClass(status + 'Border')}, 2000);
     }
 
     newGame = () => {
-        // Clear the win or loss status
-        $('#statusDisplay').text('');
-
-        // Display wins and losses
-        this.displayStats();
-
         // Make the board
-        this.setupBoard(20, 20, 50);
+        let difficulty = $('#difficulty').val().split('-');
+        this.setupBoard(difficulty[1], difficulty[0], difficulty[2]);
 
         // Update the board
         this.updateBoard();
-    }
-
-    lost = () => {
-        // Basically same as won just increments losses
-        this.losses++;
-        $('#statusDisplay').text('YOU LOST!');
-        setTimeout(this.newGame, 2000);
-    }
-
-    won = () => {
-        // Basically same as lost just increments wons
-        this.wins++;
-        $('#statusDisplay').text('YOU WON!');
-        setTimeout(this.newGame, 2000);
-    }
-
-    getAdjTiles = (ri, ci) => {
-        // Returns the adjacent tiles
-        let t = [ 
-            [Math.min(ri + 1, this.size[0]-1), ci], 
-            [Math.max(ri - 1, 0), ci], 
-            [ri, Math.min(ci + 1, this.size[1]-1)], 
-            [ri, Math.max(ci - 1, 0)] 
-        ]
-        return removeDuplicates(t.filter(p => {return (p != [ri, ci])}));
+        this.startTime = Date.now();
     }
 
     getAllAround = (ri, ci) => {
         // Returns all of the 8 tiles around
         // Unless the tiles are duplicates
-        let t = this.getAdjTiles(ri, ci);
 
-        t.push(
+        let t = [
+            [Math.min(ri + 1, this.size[0]-1), ci], 
+            [Math.max(ri - 1, 0), ci], 
+            [ri, Math.min(ci + 1, this.size[1]-1)], 
+            [ri, Math.max(ci - 1, 0)],
             [Math.max(ri - 1, 0), Math.max(ci - 1, 0)], 
             [Math.min(ri + 1, this.size[0]-1), Math.max(ci - 1, 0)], 
             [Math.min(ri + 1, this.size[0]-1), Math.min(ci + 1, this.size[1]-1)], 
             [Math.max(ri - 1, 0), Math.min(ci + 1, this.size[1]-1)]
-        );
+        ];
         return removeDuplicates(t.filter(p => {return p != [ri, ci]}));
     }
 
-    revealTiles = (row, column, bomb) => {
-        // Uses BFS to reveal all of the 0's in a lake
-
-        // Adds new tiles to this array when the adj tiles are recived and will check if they are not a bomb
-        var tilesToSearch = [[row, column]];
-        // Keeps track of all of the searched tiles in order to make sure they arent searched again
-        var tilesSearched = [];
-
-        while (tilesToSearch.length > 0) {
-            // Gets the current tiles row and column
-            let [ri, ci] = tilesToSearch[0];
-            // Removes the first tile from the list (the current one)
-            tilesToSearch.shift();
-            // Gets the physical tile of it
-            let tile = this.board[ri][ci];
-
-            // Reveal the current tile
-            tile.reveal();
-            // Get the tiles around the current one
-            let adjTiles = this.getAllAround(ri, ci);
-
-            // Loops through all of the tiles that are adj
-            for (let i = 0; i < adjTiles.length; i++) {
-
-                // Gets the row and column of adj tile
-                let [r, c] = adjTiles[i];
-
-                // Makes sure that this a unique tile and a 0
-                if (this.board[r][c].held == '0' && !includesArray(tilesSearched, [r, c]) && !includesArray(tilesToSearch, [r, c])) {
-                    tilesToSearch.push([r, c]);
-
-                // If not, makes sure its not a bomb and reveals it
-                } else if (this.board[r][c].held != 'bomb') {
-                    this.board[r][c].reveal();
-                }
-            }
-            
-            // Adds the tile that was just searched to the tiles searched
-            tilesSearched.push([ri, ci]);
-        }
-
-        // Update board
-        this.updateBoard();
-    }
+    
 
     bfs = (row, column, tilesSearched) => {
-        tilesSearched.push([row, column]);
+        // Store if this is the start of the search
+        let first = tilesSearched.length == 0
+
+        // If this is already searched, don't continue
         if (includesArray(tilesSearched, [row, column])) 
             return;
 
+        tilesSearched.push([row, column]);
+
+        // If this is a bomb then dont reveal it
+        if (this.board[row][column].held == 'B')
+            return;
+
+        // Reveal the current tile
         this.board[row][column].reveal();
 
-        if (this.board[row][column].held != '0') {
-            return;
+        // If its a 0, then add the tiles around this one
+        if (this.board[row][column].held == '0') {
+            let tilesAround = this.getAllAround(row, column);
+            for (let i = 0; i < tilesAround.length; i++) {
+                let [r, c] = tilesAround[i];
+                this.bfs(r, c, tilesSearched);
+            }
         }
-        
-        let tilesAround = this.getAllAround(row, column);
-        for (let i = 0; i < tilesAround.length; i++) {
-            let [r, c] = tilesAround[i];
-            this.bfs(r, c, tilesSearched);
+
+        // If it is the first, then at the very end of the loop update the board
+        if (first) this.updateBoard();
+    }
+
+    revealAll = () => {
+        for (let i = 0; i < this.board.length; i++) {
+            for (let j = 0; j < this.board[0].length; j++) {
+                this.board[i][j].reveal();
+            }
         }
+
+        this.updateBoard();
+    }
+
+    updateBoard = () => {
+        // Calls display board with the current board
+        this.displayBoard(this.board);
     }
 
     displayBoard = (board) => {
@@ -182,7 +112,7 @@ export default class Game {
             let rowElement = $('<div class="boardRow"></div>');
 
             for (let ci = 0; ci < board[0].length; ci++) {
-                let tile = this.board[ri][ci];
+                let tile = board[ri][ci];
 
                 tilesLeft += (tile.revealed? 0: 1);
 
@@ -190,15 +120,17 @@ export default class Game {
                     `<div 
                         class="boardCell ${tile.revealed? "revealedCell": "hiddenCell"}"
                     >${tile.revealed? (tile.held == '0'? '': tile.held): (tile.flagged? 'O': '')}</div>`);
+                    
                 cell.mousedown((event) => {
                     switch (event.which) {
                         case 1:
                             tile.clicked((bomb) => {
                                 if (bomb) {
-                                    this.lost();
+                                    this.done('lost');
                                     return;
                                 } else
-                                    this.revealTiles(ri, ci, bomb)
+                                    this.bfs(ri, ci, [], 0);
+                                    //this.revealTiles(ri, ci)
                                 });
                             break;
                         case 3:
@@ -208,14 +140,7 @@ export default class Game {
                     }
                 });
 
-                if (tile.held != 'bomb') {
-                    let n = Number(tile.held)
-                    cell.css('color', `rgb(${ (n == 3 || n == 5? 50 * n: 50) }, ${ (n == 2? 100: 50) }, ${ (n == 1 || n == 4? 200 / (n/2): 0) })`)
-                }
-
-                if (tile.flagged) {
-                    cell.css('color', `rgb(150, 20, 20)`)
-                }
+                cell.css('color', tile.getColor());
 
                 rowElement.append(cell);
             }
@@ -224,12 +149,12 @@ export default class Game {
         }
 
         if (tilesLeft == this.bombAmt) {
-            this.won();
+            this.done('won');
         }
 
     }
     
-    setupBoard = (rowAmt, columnAmt, bombAmt) => {
+    setupBoard = (rowAmt, columnAmt, bombAmt, avoidPos=[]) => {
         this.board = [];
         this.size = [rowAmt, columnAmt];
         this.bombAmt = bombAmt;
@@ -239,9 +164,12 @@ export default class Game {
         while (bombs.length < bombAmt) {
             let loc = [Math.floor(Math.random() * rowAmt), Math.floor(Math.random() * columnAmt)];
 
-            if (!includesArray(bombs, loc)) {
-                bombs.push(loc);
+            let bad = false;
+            if (includesArray(bombs, loc)) {
+                bad = true;
             }
+
+            if (!bad) bombs.push(loc);
         }
 
         for (let i = 0; i < rowAmt; i++) {
@@ -251,11 +179,10 @@ export default class Game {
                 let pos = [i, j];
                 let held = 0;
 
-                if (includesArray(bombs, pos)) held = 'bomb';
+                if (includesArray(bombs, pos)) held = 'B';
                 else {
                     let bombsAround = 0;
                     let around = this.getAllAround(i, j);
-                    console.log(around)
                     for (let k = 0; k < around.length; k++) {
                         if (includesArray(bombs, around[k])) bombsAround++;
                     }
