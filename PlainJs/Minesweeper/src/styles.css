@@ -1,20 +1,21 @@
 * {
     font-family: "ＭＳ Ｐゴシック";
-    font-weight: bolder;
-    text-shadow: 1px 0 currentColor;
-    font-size: 15px;
+    font-weight: 900;
+    font-size: 2vmin;
 }
 
-body {
-    height: 100%;
+body, html {
     background-color: rgb(38, 41, 48);
-    overflow: hidden;
+    padding: 0;
+    margin: 0;
+    text-align: center;
 }
+
+/* Board Container */
 
 #boardContainer {
     width: fit-content;
-    outline: 10px solid rgb(89, 89, 89);
-    margin: 20px;
+    margin: auto;
 }
 
 #boardContainer.lostBorder {
@@ -30,50 +31,41 @@ body {
 }
 
 .boardCell {
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    justify-content: center;
+    width: 3vmin;
+    height: 3vmin;
+    line-height: 3vmin;
     border: none;
-    line-height: 30px;
 }
 
 .boardCell:hover {
     filter: brightness(150%);
 }
 
+/* Data container */
+
 #dataContainer {
-    display: flex;
-    align-items: center;
+    margin: 1vmin;
 }
 
 #dataContainer select {
-    border: 3px inset rgb(239, 239, 239);
+    border: 0.5vmin outset rgb(239, 239, 239);
     background-color: rgb(193, 193, 193);
     padding: 9px;
-    margin-left: 10px;
-    font-weight: bolder;
+    margin: none;
 }
 
-#dataContainer #wins, #dataContainer #losses {
-    border: 3px inset rgb(239, 239, 239);
-    background-color: rgb(193, 193, 193);
-    padding: 10px;
-    margin-left: 10px;
+#dataContainer #difficulty:active {
+    border-style: inset;
 }
-
-/* #boardContainer:active {
-    animation: shake 0.1s;
-} */
 
 .hiddenCell { 
     background-color: rgb(193, 193, 193);
-    border: 5px outset rgb(239, 239, 239);
+    border: 0.5vmin outset rgb(239, 239, 239);
 }
 
 .revealedCell {
     background-color: rgb(190, 190, 190);
-    border: 5px solid rgb(190, 190, 190);
+    border: 0.5vmin solid rgb(190, 190, 190);
 }
 
 .shake {

@@ -1,6 +1,6 @@
 import Tile from './tile.js';
 import View from './view.js';
-import { removeDuplicates, includesArray } from './utils.js';
+import { removeDuplicates, includesArray, getElementWidthInVmin } from './utils.js';
 import Board from './board.js';
 
 // Main game class
@@ -152,7 +152,6 @@ export default class Game {
         if (tilesLeft == this.board.bombAmt) {
             this.done('won');
         }
-
     }
     
     setupBoard = (rowAmt, columnAmt, bombAmt, avoidPos=[]) => {

@@ -29,3 +29,21 @@ export function removeDuplicates(arr) {
     }
     return uniques;
 }
+
+// Chatgpt code for getting an elements width in vmin
+export function getElementWidthInVmin(element) {
+  // Get the width of the element in pixels
+  var widthInPixels = $(element).width();
+
+  // Get the viewport width and height in pixels
+  var viewportWidth = $(window).width();
+  var viewportHeight = $(window).height();
+
+  // Calculate the minimum viewport dimension in pixels
+  var minViewportDimension = Math.min(viewportWidth, viewportHeight);
+
+  // Calculate the width in vmin
+  var widthInVmin = (widthInPixels / minViewportDimension) * 100;
+
+  return widthInVmin;
+}

@@ -1,3 +1,5 @@
+import { getElementWidthInVmin } from './utils.js';
+
 export default class View {
     display = (board) => {
         const boardContainer = $('#boardContainer');
@@ -51,6 +53,10 @@ export default class View {
 
             boardContainer.append(rowElement);
         }
+
+        let w = this.getTileSize(board);
+        console.log(w);
+        $('.boardCell').css({'width': w, 'height': w});
 
         if (tilesLeft == this.bombAmt) {
             this.done('won');
