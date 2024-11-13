@@ -1,6 +1,7 @@
 import Tile from './tile.js';
 import View from './view.js';
 import { removeDuplicates, includesArray } from './utils.js';
+import Board from './board.js';
 
 // Main game class
 export default class Game {
@@ -16,7 +17,7 @@ export default class Game {
         this.newGame();
 
         // Bind new game
-        $('#newGameBtn').on('mousedown', this.newGame);
+        $('#difficulty').on('change', this.newGame);
     }
 
     done = (status) => {
@@ -30,8 +31,8 @@ export default class Game {
 
     newGame = () => {
         // Make the board
-        let difficulty = $('#difficulty').val().split('-');
-        this.setupBoard(difficulty[1], difficulty[0], difficulty[2]);
+        let data = $('#difficulty').val().split('-');
+        this.board = new Board(data[1], data[0], data[2]);
 
         // Update the board
         this.updateBoard();
@@ -43,14 +44,14 @@ export default class Game {
         // Unless the tiles are duplicates
 
         let t = [
-            [Math.min(ri + 1, this.size[0]-1), ci], 
+            [Math.min(ri + 1, this.board.size[0]-1), ci], 
             [Math.max(ri - 1, 0), ci], 
-            [ri, Math.min(ci + 1, this.size[1]-1)], 
+            [ri, Math.min(ci + 1, this.board.size[1]-1)], 
             [ri, Math.max(ci - 1, 0)],
             [Math.max(ri - 1, 0), Math.max(ci - 1, 0)], 
-            [Math.min(ri + 1, this.size[0]-1), Math.max(ci - 1, 0)], 
-            [Math.min(ri + 1, this.size[0]-1), Math.min(ci + 1, this.size[1]-1)], 
-            [Math.max(ri - 1, 0), Math.min(ci + 1, this.size[1]-1)]
+            [Math.min(ri + 1, this.board.size[0]-1), Math.max(ci - 1, 0)], 
+            [Math.min(ri + 1, this.board.size[0]-1), Math.min(ci + 1, this.board.size[1]-1)], 
+            [Math.max(ri - 1, 0), Math.min(ci + 1, this.board.size[1]-1)]
         ];
         return removeDuplicates(t.filter(p => {return p != [ri, ci]}));
     }
@@ -68,14 +69,14 @@ export default class Game {
         tilesSearched.push([row, column]);
 
         // If this is a bomb then dont reveal it
-        if (this.board[row][column].held == 'B')
+        if (this.board.tiles[row][column].held == 'B')
             return;
 
         // Reveal the current tile
-        this.board[row][column].reveal();
+        this.board.tiles[row][column].reveal();
 
         // If its a 0, then add the tiles around this one
-        if (this.board[row][column].held == '0') {
+        if (this.board.tiles[row][column].held == '0') {
             let tilesAround = this.getAllAround(row, column);
             for (let i = 0; i < tilesAround.length; i++) {
                 let [r, c] = tilesAround[i];
@@ -88,9 +89,9 @@ export default class Game {
     }
 
     revealAll = () => {
-        for (let i = 0; i < this.board.length; i++) {
-            for (let j = 0; j < this.board[0].length; j++) {
-                this.board[i][j].reveal();
+        for (let i = 0; i < this.board.tiles.length; i++) {
+            for (let j = 0; j < this.board.tiles[0].length; j++) {
+                this.board.tiles[i][j].reveal();
             }
         }
 
@@ -108,11 +109,11 @@ export default class Game {
 
         let tilesLeft = 0;
 
-        for (let ri = 0; ri < board.length; ri++) {
+        for (let ri = 0; ri < board.tiles.length; ri++) {
             let rowElement = $('<div class="boardRow"></div>');
 
-            for (let ci = 0; ci < board[0].length; ci++) {
-                let tile = board[ri][ci];
+            for (let ci = 0; ci < board.tiles[0].length; ci++) {
+                let tile = board.tiles[ri][ci];
 
                 tilesLeft += (tile.revealed? 0: 1);
 
@@ -148,7 +149,7 @@ export default class Game {
             boardContainer.append(rowElement);
         }
 
-        if (tilesLeft == this.bombAmt) {
+        if (tilesLeft == this.board.bombAmt) {
             this.done('won');
         }
 

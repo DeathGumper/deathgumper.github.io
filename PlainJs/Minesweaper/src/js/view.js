@@ -26,7 +26,7 @@ export default class View {
                                     this.done('lost');
                                     return;
                                 } else
-                                    this.bfs(ri, ci, [], 0);
+                                    this.board.bfs(ri, ci, [], 0);
                                     //this.revealTiles(ri, ci)
                                 });
                             break;

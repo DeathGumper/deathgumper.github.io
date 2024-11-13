@@ -1,8 +1,9 @@
+import Tile from './tile.js';
 import { removeDuplicates, includesArray } from './utils.js';
 
 export default class Board {
     constructor(rowAmt, columnAmt, bombAmt, avoidPos=[]) {
-        this.board = [];
+        this.tiles = [];
         this.size = [rowAmt, columnAmt];
         this.bombAmt = bombAmt;
 
@@ -42,7 +43,7 @@ export default class Board {
                 row.push(cell);
             }
 
-            this.board.push(row);
+            this.tiles.push(row);
         }
     }
 
