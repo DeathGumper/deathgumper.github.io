@@ -1,5 +1,5 @@
 import Tile from './tile.js';
-import { removeDuplicates, includesArray } from './utils.js';
+import { removeDuplicates, includesArray, isBetween } from './utils.js';
 
 export default class Board {
     constructor(rowAmt, columnAmt, bombAmt, avoidPos=[]) {
@@ -14,6 +14,11 @@ export default class Board {
 
             let bad = false;
             if (includesArray(bombs, loc)) {
+                bad = true;
+            }
+
+            if (isBetween(loc[0], avoidPos[0] - 1, avoidPos[0] + 1) &&
+            isBetween(loc[1], avoidPos[1] - 1, avoidPos[1] + 1)) {
                 bad = true;
             }
 
@@ -37,19 +42,21 @@ export default class Board {
 
                     held = String(bombsAround);
                 }
+
                 
 
                 let cell = new Tile(held);
+
                 row.push(cell);
             }
 
             this.tiles.push(row);
         }
+
+        if (avoidPos.length != 0) this.tiles[avoidPos[0]][avoidPos[1]].clicked(() => this.bfs(avoidPos[0], avoidPos[1], []))
     }
 
     bfs = (row, column, tilesSearched) => {
-        // Store if this is the start of the search
-        let first = tilesSearched.length == 0
 
         // If this is already searched, don't continue
         if (includesArray(tilesSearched, [row, column])) 
@@ -72,9 +79,10 @@ export default class Board {
                 this.bfs(r, c, tilesSearched);
             }
         }
+    }
 
-        // If it is the first, then at the very end of the loop update the board
-        if (first) this.updateBoard();
+    getBlank = () => {
+        return new this(this.rowAmt, this.columnAmt, 0);
     }
 
     getAllAround = (ri, ci) => {
@@ -95,7 +103,7 @@ export default class Board {
     }
 
     getTile = (row, column) => {
-        return this.board[row][column];
+        return this.tiles[row][column];
     }
 
     revealAll = () => {
