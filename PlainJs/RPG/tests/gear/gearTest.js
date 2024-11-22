@@ -1,5 +1,5 @@
-import Character from '../../character/src/character.js';
-import GearSystem from '../../gear/src/gearSystem.js';
+import Character from '../../resources/src/character/src/character.js';
+import GearSystem from '../../resources/src/gear/src/gearSystem.js';
 
 $(() => {
     const gearSystem = new GearSystem();

@@ -1,0 +1,34 @@
+{
+    "Leather Helmet": {
+        "rarity": "common",
+        "type": "helmet",
+        "stats": {
+            "armor": 5,
+            "speed": -10
+        }
+    },
+    "Leather Chestplate": {
+        "rarity": "common",
+        "type": "chestplate",
+        "stats": {
+            "armor": 15,
+            "speed": -20
+        }
+    },
+    "Leather Trousers": {
+        "rarity": "common",
+        "type": "trousers",
+        "stats": {
+            "armor": 10,
+            "speed": -15
+        }
+    },
+    "Leather Boots": {
+        "rarity": "common",
+        "type": "boots",
+        "stats": {
+            "armor": 3,
+            "speed": -5
+        }
+    }
+}

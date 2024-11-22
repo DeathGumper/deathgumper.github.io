@@ -1,0 +1,12 @@
+Rarities 
+    common
+    uncommon
+    rare
+    epic
+    legendary 
+
+Gear Types 
+    helmet
+    chestplate
+    trousers
+    boots 

@@ -1,10 +1,7 @@
 export default class Gear {
     type = null
-    constructor(armor=0, damage=0) {
-        this.stats = {
-            'armor': armor,
-            'damage': damage
-        }
+    constructor(stats) {
+        this.stats = stats
     }
 
     getStat = (stat) => {
