@@ -1,0 +1,41 @@
+* {
+    user-select: none;
+}
+
+html, body {
+    margin: 0px;
+}
+
+#inventory, #gear {
+    gap: 0.2vw;
+    padding: 0.2vw;
+    background-color: tan;
+    border: 0.3vmin solid rgb(78, 63, 44);
+    border-radius: 0.4vmin;
+    margin: 0.5vmin;
+}
+
+#inventory {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    width: 30vw;
+}
+
+#gear { 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 6vw;
+}
+
+.item {
+    display: flex;
+    aspect-ratio: 1;
+    border: 2px solid rgb(119, 93, 58);
+    border-radius: 0.4vmin;
+    background-color: rgb(170, 145, 111);
+}
+
+.selected {
+    border-color: rgb(255, 245, 231);
+}

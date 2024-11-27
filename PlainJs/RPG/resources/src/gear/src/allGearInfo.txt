@@ -10,3 +10,14 @@ Gear Types
     chestplate
     trousers
     boots 
+    main hand
+    off hand
+
+Elements
+    fire - leaves a fire burn that deals damage for a little while
+    poison - leaves a poisoning effect that deals damage for a little while
+    ice - slows enemies and then with enough ice, freezes
+    electric - has a chance to stun enemies, resulting in a missed turn
+
+Unique Stats
+    block - chance to completely block an attack

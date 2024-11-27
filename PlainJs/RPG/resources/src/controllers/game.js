@@ -1,21 +1,18 @@
 import Character from '../character/src/character.js';
 import GearSystem from '../gear/src/gearSystem.js';
+import View from './view.js';
 
 export default class Game {
     constructor() {
+        this.view = new View();
         this.gearSystem = new GearSystem();
         this.character = new Character();
-
-        for (let i = 0; i < 10; ++i) {
-            let gear = this.gearSystem.getRandomGear();
-            let currentGear = this.character.getGearPiece(gear.getType())
-            if (currentGear == null || 
-                gear.getStat('armor') > currentGear.getStat('armor')
-            ) {
-                this.character.equip(gear);
-                console.log('newGear')
-            }
-        }
         console.log(this.character);
+        this.view.displayInventory(this.character, '#content');
+
+        $('#newItem').click(() => {
+            this.character.pickUp(this.gearSystem.getRandomGear());
+            this.view.displayInventory(this.character, '#content');
+        });
     }
 }

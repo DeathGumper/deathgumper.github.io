@@ -3,32 +3,79 @@
         "rarity": "common",
         "type": "helmet",
         "stats": {
-            "armor": 5,
-            "speed": -10
-        }
+            "armor": 4,
+            "weight": 4,
+            "fire res": 2,
+            "poison res": 0,
+            "ice res": 2,
+            "electric res": 0
+        },
+        "image": "leather_cap.png" 
     },
     "Leather Chestplate": {
         "rarity": "common",
         "type": "chestplate",
         "stats": {
-            "armor": 15,
-            "speed": -20
-        }
+            "armor": 10,
+            "weight": 12,
+            "fire res": 2,
+            "poison res": 0,
+            "ice res": 2,
+            "electric res": 0
+        },
+        "image": "leather_jacket.png" 
     },
     "Leather Trousers": {
         "rarity": "common",
         "type": "trousers",
         "stats": {
-            "armor": 10,
-            "speed": -15
-        }
+            "armor": 7,
+            "weight": 9,
+            "fire res": 2,
+            "poison res": 0,
+            "ice res": 2,
+            "electric res": 0
+        },
+        "image": "leather_pants.png" 
     },
     "Leather Boots": {
         "rarity": "common",
         "type": "boots",
         "stats": {
             "armor": 3,
-            "speed": -5
-        }
+            "weight": 5,
+            "fire res": 2,
+            "poison res": 0,
+            "ice res": 2,
+            "electric res": 0
+        },
+        "image": "leather_boots.png" 
+    },
+    "Rusty Short Sword": {
+        "rarity": "common",
+        "type": "mainhand",
+        "stats": {
+            "damage": 12,
+            "weight": 9,
+            "fire damage": 0,
+            "poison damage": 0,
+            "ice damage": 0,
+            "electric damage": 0
+        },
+        "image": "sword-01-rusty-shortsword.png"
+    },
+    "Wooden Shield": {
+        "rarity": "common",
+        "type": "offhand",
+        "stats": {
+            "armor": 5,
+            "block": 15,
+            "weight": 9,
+            "fire res": 0,
+            "poison res": 2,
+            "ice res": 3,
+            "electric res": 0
+        },
+        "image": "shield-01-wooden-buckler.png"
     }
 }
