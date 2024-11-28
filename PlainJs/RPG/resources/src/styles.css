@@ -6,7 +6,12 @@ html, body {
     margin: 0px;
 }
 
-#inventory, #gear {
+div#inventoryScreen {
+    display: flex;
+    justify-content: space-around;
+}
+
+div#inventory, div#gear, div#itemCompare {
     gap: 0.2vw;
     padding: 0.2vw;
     background-color: tan;
@@ -15,20 +20,25 @@ html, body {
     margin: 0.5vmin;
 }
 
-#inventory {
+div#inventory {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(10, 1fr);
     width: 30vw;
 }
 
-#gear { 
+div#inventoryScreen div#itemCompare, div#inventoryScreen div#inventoryItem {
+    background-color: pink;
+}
+
+div#gear { 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     width: 6vw;
+    height: min-content;
 }
 
-.item {
+div.item {
     display: flex;
     aspect-ratio: 1;
     border: 2px solid rgb(119, 93, 58);
@@ -36,6 +46,6 @@ html, body {
     background-color: rgb(170, 145, 111);
 }
 
-.selected {
+div.selected {
     border-color: rgb(255, 245, 231);
 }

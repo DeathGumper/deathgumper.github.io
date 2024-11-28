@@ -8,11 +8,11 @@ export default class Game {
         this.gearSystem = new GearSystem();
         this.character = new Character();
         console.log(this.character);
-        this.view.displayInventory(this.character, '#content');
+        this.view.displayWholeInventory(this.character, '#content');
 
         $('#newItem').click(() => {
             this.character.pickUp(this.gearSystem.getRandomGear());
-            this.view.displayInventory(this.character, '#content');
+            this.view.displayWholeInventory(this.character, '#content');
         });
     }
 }

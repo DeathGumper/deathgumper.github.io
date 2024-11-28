@@ -49,7 +49,6 @@ export default class Character {
 
     equip = (gear) => {
         this.inventory = this.inventory.filter((value) => {
-            console.log(value.id, gear.id)
             return value.id !== gear.id
         });
         if (gear['type'] in this.gear) {
