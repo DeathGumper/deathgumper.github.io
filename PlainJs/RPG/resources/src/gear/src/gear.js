@@ -1,12 +1,31 @@
 export default class Gear {
     type = null;
     constructor(info, name) {
+        this.parts = info['parts'];
         this.stats = info['stats'];
         this.name = name;
-        let start = '../assets/gear/'
-        this.image = start + info['image'];
+        this.key = crypto.randomUUID();
+
+        this.image = '../assets/gear/' + info['image'];
         this.hasImage = info['image'] != undefined;
-        this.id = crypto.randomUUID();
+
+        this.calculateStats();
+        this.calculatePower();
+    }
+
+    calculateStats = () => {
+        for (let part in this.parts) {
+            for (let [stat, value] of Object.entries(this.parts[part]['stats'])) {
+                this.stats[stat] += value;
+            }
+        }
+    }
+
+    calculatePower = () => {
+        this.power = 0;
+        for (const [key, value] of Object.entries(this.stats)) {
+            this.power += value;
+        }
     }
 
     getStat = (stat) => {

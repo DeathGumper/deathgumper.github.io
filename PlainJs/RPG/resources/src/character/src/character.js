@@ -1,7 +1,7 @@
 export default class Character {
     constructor() {
         this.health = 100;
-        this.gear = {
+        this.equipped = {
             'helmet': null,
             'chestplate': null,
             'trousers': null,
@@ -14,6 +14,39 @@ export default class Character {
         this.inventory = [
 
         ]
+        this.maxInventoryCount = 100
+        this.updateStats();
+    }
+    
+    getItemFromKey = (key) => {
+        for (let i = 0; i < this.inventory.length; i++) {
+            if (this.inventory[i].key == key) 
+                return this.inventory[i];
+        }
+
+        return false;
+    }
+
+    getEquippedItem = (type) => {
+        return this.equipped[type];
+    }
+
+    getEquipped = () => {
+        return this.equipped;
+    }
+
+    sortInventory = () => {
+        let sorting = {
+
+        }
+        let i = 0;
+        for (const key in this.equipped) {
+            sorting[key] = i;
+            i++;
+        }
+        this.inventory.sort(function(a, b) {
+            return sorting[a.type] - sorting[b.type];
+        });
     }
 
     updateStats = () => {
@@ -32,15 +65,13 @@ export default class Character {
             'block': 0,
         }
 
-        for (const [gearType, gear] of Object.entries(this.gear)) {
+        for (const [gearType, gear] of Object.entries(this.equipped)) {
             if (gear != null) {
                 for (const [stat, value] of Object.entries(gear.stats)) {
                     this.stats[stat] += value;
                 }
             }
         }
-        
-        console.log(this)
     }
 
     pickUp = (item) => {
@@ -49,17 +80,13 @@ export default class Character {
 
     equip = (gear) => {
         this.inventory = this.inventory.filter((value) => {
-            return value.id !== gear.id
+            return value.key !== gear.key
         });
-        if (gear['type'] in this.gear) {
-            if (this.gear[gear['type']] != null) 
-                this.pickUp(this.gear[gear['type']])
-            this.gear[gear['type']] = gear;
+        if (gear['type'] in this.equipped) {
+            if (this.equipped[gear['type']] != null) 
+                this.pickUp(this.equipped[gear['type']])
+            this.equipped[gear['type']] = gear;
             this.updateStats();
         }
-    }
-
-    getGearPiece = (type) => {
-        return this.gear[type];
     }
 }

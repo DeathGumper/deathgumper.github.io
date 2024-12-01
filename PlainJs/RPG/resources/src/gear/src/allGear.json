@@ -10,6 +10,7 @@
             "ice res": 2,
             "electric res": 0
         },
+        "parts": {},
         "image": "leather_cap.png" 
     },
     "Leather Chestplate": {
@@ -23,6 +24,7 @@
             "ice res": 2,
             "electric res": 0
         },
+        "parts": {},
         "image": "leather_jacket.png" 
     },
     "Leather Trousers": {
@@ -36,6 +38,7 @@
             "ice res": 2,
             "electric res": 0
         },
+        "parts": {},
         "image": "leather_pants.png" 
     },
     "Leather Boots": {
@@ -49,32 +52,156 @@
             "ice res": 2,
             "electric res": 0
         },
+        "parts": {},
         "image": "leather_boots.png" 
     },
     "Rusty Short Sword": {
         "rarity": "common",
         "type": "mainhand",
         "stats": {
-            "damage": 12,
-            "weight": 9,
+            "damage": 5,
+            "weight": 5,
             "fire damage": 0,
             "poison damage": 0,
             "ice damage": 0,
             "electric damage": 0
         },
+        "parts": {
+            "blade": [
+                {
+                    "name": "Sharpened Blade",
+                    "stats": {
+                        "damage": 5,
+                        "weight": 5
+                    }
+                },
+                {
+                    "name": "Dull Blade",
+                    "stats": {
+                        "damage": 3,
+                        "weight": 4
+                    }
+                },
+                {
+                    "name": "Broken Blade",
+                    "stats": {
+                        "damage": 1,
+                        "weight": 2
+                    }
+                }
+            ],
+            "gaurd": [
+                {
+                    "name": "Steel Gaurd",
+                    "stats": {
+                        "damage": 1,
+                        "weight": 4
+                    }
+                },
+                {
+                    "name": "Iron Gaurd",
+                    "stats": {
+                        "damage": 1,
+                        "weight": 6
+                    }
+                },
+                {
+                    "name": "No Gaurd",
+                    "stats": {}
+                }
+            ],
+            "grip": [
+                {
+                    "name": "Wood Grip",
+                    "stats": {
+                        "damage": 3,
+                        "weight": 2
+                    }
+                },
+                {
+                    "name": "Bone Grip",
+                    "stats": {
+                        "damage": 4,
+                        "weight": 5
+                    }
+                },
+                {
+                    "name": "Ivory Grip",
+                    "stats": {
+                        "damage": 5,
+                        "weight": 3
+                    }
+                },
+                {
+                    "name": "Leather Grip",
+                    "stats": {
+                        "damage": 2,
+                        "weight": 1
+                    }
+                }
+            ]
+        },
         "image": "sword-01-rusty-shortsword.png"
     },
-    "Wooden Shield": {
+    "Wooden Buckler Shield": {
         "rarity": "common",
         "type": "offhand",
         "stats": {
             "armor": 5,
-            "block": 15,
+            "block": 10,
             "weight": 9,
             "fire res": 0,
             "poison res": 2,
             "ice res": 3,
             "electric res": 0
+        },
+        "parts": {
+            "grip": [
+                {
+                    "name": "Leather Grip",
+                    "stats": {
+                        "block": 1,
+                        "weight": 1
+                    }
+                },
+                {
+                    "name": "Wood Grip",
+                    "stats": {
+                        "block": 4,
+                        "weight": 2
+                    }
+                }
+            ],
+            "material": [
+                {
+                    "name": "Liden",
+                    "stats": {
+                        "block": 5,
+                        "weight": 4
+                    }
+                },
+                {
+                    "name": "oak",
+                    "stats": {
+                        "block": 7,
+                        "weight": 5
+                    }
+                },
+                {
+                    "name": "Pine",
+                    "stats": {
+                        "block": 5,
+                        "weight": 4
+                    }
+                },
+                {
+                    "name": "Wicker",
+                    "stats": {
+                        "block": 2,
+                        "weight": 2
+                    }
+                }
+            ]
         },
         "image": "shield-01-wooden-buckler.png"
     }

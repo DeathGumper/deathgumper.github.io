@@ -10,25 +10,46 @@
     <title>RPG</title>
 </head>
 <body>
-    <button id="newItem">
-        New Item
+    <button id="backBtn">
+        Back
     </button>
     <div id="content">
+        <div id="mainMenuScreen">
+            <div id="mainMenuBtnContainer">
+                <button id="inventoryBtn" class="mainMenuBtn">
+                    Inventory
+                </button>
+                <button id="settingsBtn" class="mainMenuBtn">
+                    Settings
+                </button>
+            </div>
+        </div>
         <div id="inventoryScreen">
-            <div id="inventory">
-                
+            <div id="inventoryContainer" class="border">
+                <button id="newItem">
+                    New Item
+                </button>
+                <button id="sort">
+                    Sort
+                </button>
+                <div id="itemGrid">
+                    
+                </div>
             </div>
+            <div id="characterStats" class="border"></div>
             <div id="itemCompare">
-                <div id="inventoryItem"></div>
-                <div id="gearItem"></div>
+                <div id="inventoryItem" class="compareGear border">
+                </div>
+                <div id="gearItem" class="compareGear border">
+                </div>
             </div>
-            <div id="gear">
-                <div id="helmet" class="item" key="0"></div>
-                <div id="chestplate" class="item" key="0"></div>
-                <div id="trousers" class="item" key="0"></div>
-                <div id="boots" class="item" key="0"></div>
-                <div id="mainhand" class="item" key="0"></div>
-                <div id="offhand" class="item" key="0"></div>
+            <div id="equipped" class="border">
+                <div id="helmet" class="slot" key="0"></div>
+                <div id="chestplate" class="slot" key="0"></div>
+                <div id="trousers" class="slot" key="0"></div>
+                <div id="boots" class="slot" key="0"></div>
+                <div id="mainhand" class="slot" key="0"></div>
+                <div id="offhand" class="slot" key="0"></div>
             </div>
         </div>
     </div>

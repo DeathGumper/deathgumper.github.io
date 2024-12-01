@@ -1,96 +1,119 @@
 export default class View {
-    displayWholeInventory = (character) => {
-        this.displayCharacterGear(character);
-        this.displayInventory(character, 0);
-        this.displayInventoryComparing(character);
+    // Display
+
+    // ### Main Menu Display ###
+    displayMainMenu = (character) => {
+        $('#mainMenuScreen').show();
     }
 
-    displayCharacterGear = (character) => {
-        let gear = character.gear;
+    // ### Inventory Display ###
+    displayWholeInventory = (character) => {
+        $('#inventoryScreen').show();
+        this.displayInventoryCharacterEquipped(character);
+        this.displayInventoryItems(character, 0);
+        this.displayInventoryComparing(null, null)
+        this.displayInventoryCharacterStats(character);
+    }
 
-        for (let [type, item] of Object.entries(gear)) {
-            const gearSlot = $('#' + type);
+    displayInventoryCharacterStats = (character) => {
+        let characterStats = $('#characterStats');
+        characterStats.empty();
+        characterStats.append($(`<h3 class="title">Character</h3>`))
+        for (const [stat, value] of Object.entries(character.stats)) {
+            characterStats.append($(`<p class="stat">${stat}: ${value}</p>`))
+        }
+    }
 
-            if (item != null) {  
-                if (gearSlot.attr('key') != item.id) {
-                    gearSlot.empty();  
-                    if (item.hasImage) {
-                        gearSlot.append($(`<img src="${item.image}"></img>`))
-                    } else {
-                        gearSlot.append($(`<span>${item.name}</span>`))
+    displayInventoryComparing = (inventorySelected, equippedSelected) => {
+        let displayItem = (item, container, otherItem) => {
+            container.empty();
+
+            if (item) {
+                container.append($(`<h3 class="title">${item.name}</h3>`));
+                container.append($(`<h4 class="power">Power: ${item.power}</h4>`));
+                for (const [stat, value] of Object.entries(item.stats)) {
+                    container.append($(`<p class="stat 
+                        ${(value > (otherItem? otherItem.stats[stat]: 0)? 'greenText': '')}
+                        ${(value < (otherItem? otherItem.stats[stat]: 0)? 'redText': '')}
+                        ">
+                        ${value > 0? '+': ''}${value} ${stat}
+                    </p>`))
+                }
+                if (Object.keys(item.parts).length > 0) {
+                    container.append($(`<h3 class="title">Parts</h3>`));
+                    for (const part in item.parts) {
+                        container.append($(`<h4 class="part">${item.parts[part]['name']}</h4>`));
+                        for (const [stat, value] of Object.entries(item.parts[part]['stats'])) {
+                            container.append($(`<p class="stat">${value > 0? '+': ''}${value} ${stat}</p>`))
+                        }
                     }
-
-                    gearSlot.attr('key', item.id)
                 }
             }
         }
 
+        displayItem(inventorySelected, $('#itemCompare #inventoryItem'), equippedSelected);
+        displayItem(equippedSelected, $('#itemCompare #gearItem'), inventorySelected);
     }
 
-    displayInventoryComparing = (character) => {
-        var item1 = null;
-        var item2 = null;
-        if (this.itemSelected) {
-            item1 = character.inventory[this.itemSelected];
-            item2 = character.gear[item1.type];
-        }
+    displayInventoryCharacterEquipped = (character) => {
+        let equipped = character.getEquipped();
 
-        console.log(item1, item2)
+        for (let [type, item] of Object.entries(equipped)) {
+            const gearSlot = $('#' + type);
 
-        let displayItem = (item, container) => {
-            container.empty();
-            container.append($(`<h3>${item.name}</h3>`));
-            for (const [stat, value] of Object.entries(item.stats)) {
-                container.append($(`<p>${stat}: ${value}</p>`))
-            }
-        }
-        if (item1) {
-            displayItem(item1, $('#itemCompare #inventoryItem'));
-        } 
-        if (item2) {
-            displayItem(item2, $('#itemCompare #gearItem'));
-        }
-    }
-
-    displayInventory = (character, startingIndex=0) => {
-        let inventory = character.inventory
-        let inventoryContainer = $('#inventory');
-
-        inventoryContainer.empty();
-
-        for (let i = startingIndex; i < Math.max(100, inventory.length); i++) {
-            let key = i + 'item';
-            let gearSlot = $(`
-                <div id="${key}" class="item" key="0">
-                
-                </div>
-            `)
-
-            if (i < inventory.length) {
-                let item = inventory[i];
-                // There is a item at that index
+            if (item != null) {  
+                if (gearSlot.attr('key') != item.key) {
+                    gearSlot.empty();  
+                    gearSlot.append($(`<img src="${item.image}" alt="${item.name}"></img>`))
+                    gearSlot.attr('key', item.key)
+                }
+            } else {
                 gearSlot.empty();
-                gearSlot.append($(`<img src="${item.image}" alt="${item.name}"></img>`))
-
-                gearSlot.on('click', () => {
-                    if (this.itemSelected == i) {
-                        character.equip(item);
-                        $('#' + this.itemSelected + 'item').removeClass('selected');
-                        this.itemSelected = undefined;
-                        this.displayWholeInventory(character);
-                    } else {
-                        if (inventoryContainer.find('#' + this.itemSelected + 'item').length > 0)
-                            $('#' + this.itemSelected + 'item').removeClass('selected');
-                        this.itemSelected = i;
-                        $('#' + key).addClass('selected');
-                    }
-                    this.displayInventoryComparing(character);
-                })
-
-                gearSlot.attr('key', item.id);
+                gearSlot.attr('key', 0); 
             }
+        }
 
-            inventoryContainer.append(gearSlot)
+    }
+
+    displayInventoryItems = (character) => {
+        let inventory = character.inventory;
+        let itemGrid = $('#itemGrid');
+
+        if (itemGrid.children().length == 0) {
+            for (let i = 0; i < character.maxInventoryCount; i++) {
+                let id = i + 'slot';
+                let gearSlot = $(`
+                    <div id="${id}" class="slot" key="0">
+                    
+                    </div>
+                `)
+
+                itemGrid.append(gearSlot);
+            }
+        }
+
+        for (let i = 0; i < character.maxInventoryCount; i++) {
+            let id = i + 'slot';
+            let gearSlot = $('#' + id);
+            if (i < inventory.length) {
+                // There is a item at that index
+                let item = inventory[i];
+                gearSlot.removeClass('better equal worse');
+                let equipped = character.equipped[item.type];
+                if (equipped == null || item.power > equipped.power) gearSlot.addClass('better');
+                else if (equipped.power == item.power) gearSlot.addClass('equal');
+                else gearSlot.addClass('worse');
+
+                if (item.key != gearSlot.attr('key')) {
+                    gearSlot.empty();
+                    gearSlot.append($(`<img src="${item.image}" alt="${item.name}"></img>`))
+                    gearSlot.attr('key', item.key);
+                }
+            } else {
+                gearSlot.empty();
+                gearSlot.attr('key', 0);
+                gearSlot.removeClass('better equal worse');
+            }
             
 
         }
